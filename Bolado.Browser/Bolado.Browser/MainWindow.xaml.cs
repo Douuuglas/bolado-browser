@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Bolado.Browser.ViewModels;
+using System.Windows;
 
 namespace Bolado.Browser;
 
@@ -7,16 +8,16 @@ namespace Bolado.Browser;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private readonly MainWindowViewModel ViewModel = new();
+
     public MainWindow()
     {
+        DataContext = ViewModel;
         InitializeComponent();
     }
 
     private void ButtonGo_Click(object sender, RoutedEventArgs e)
     {
-        if (webView != null && webView.CoreWebView2 != null)
-        {
-            webView.CoreWebView2.Navigate(addressBar.Text);
-        }
+        webView.CoreWebView2.Navigate(ViewModel.Url);
     }
 }

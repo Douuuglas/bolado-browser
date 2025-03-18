@@ -4,17 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Bolado.Browser"
+        xmlns:vm="clr-namespace:Bolado.Browser.ViewModels"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top">
             <Button x:Name="ButtonGo"
               DockPanel.Dock="Right"
-              Click="ButtonGo_Click"
+              Command="{Binding GoCommand}"
               Content="Go"/>
-            <TextBox Name="addressBar"/>
+            <TextBox Text="{Binding Url}"/>
         </DockPanel>
-        <wv2:WebView2 Name="webView" Source="https://www.duckduckgo.com"/>
+        <wv2:WebView2 Name="webView" Source="{Binding Url}"/>
     </DockPanel>
 </Window>
