@@ -8,14 +8,19 @@
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Bolado Browser" Height="450" Width="800">
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top">
-            <Button x:Name="ButtonGo"
-              DockPanel.Dock="Right"
-              Command="{Binding GoCommand}"
-              Content="Go"/>
-            <TextBox Text="{Binding Url}"/>
+        <DockPanel Name="dockPanel" DockPanel.Dock="Top">
+            <Button DockPanel.Dock="Left" Command="{Binding BackCommand}">Back</Button>
+            <Button DockPanel.Dock="Left" Command="{Binding ForwardCommand}">Forward</Button>
+            <Button DockPanel.Dock="Left" Command="{Binding ReloadCommand}">Reload</Button>
+            <Button DockPanel.Dock="Left" Command="{Binding CancelCommand}">Cancel</Button>
+            <Button DockPanel.Dock="Right" Command="{Binding GoCommand}" CommandParameter="{Binding ElementName=url, Path=Text}">Go</Button>
+            <TextBox x:Name="url" Text="{Binding ElementName=webView, Path=Source, Mode=OneWay}">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Return" Command="{Binding GoCommand}" CommandParameter="{Binding ElementName=url, Path=Text}" />
+                </TextBox.InputBindings>
+            </TextBox>
         </DockPanel>
         <wv2:WebView2 Name="webView" Source="{Binding Url}"/>
     </DockPanel>

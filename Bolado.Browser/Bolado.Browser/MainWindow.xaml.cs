@@ -1,4 +1,5 @@
 ﻿using Bolado.Browser.ViewModels;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace Bolado.Browser;
@@ -13,11 +14,43 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         DataContext = ViewModel;
+        Loaded += MainWindow_Loaded;
         InitializeComponent();
     }
 
-    private void ButtonGo_Click(object sender, RoutedEventArgs e)
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        webView.CoreWebView2.Navigate(ViewModel.Url);
+        webView.CoreWebView2InitializationCompleted += (s, e) =>
+        {
+            ViewModel.BackEvent += () =>
+            {
+                if (webView.CoreWebView2.CanGoBack)
+                {
+                    webView.CoreWebView2.GoBack();
+                }
+            };
+
+            ViewModel.ForwardEvent += () =>
+            {
+                if (webView.CoreWebView2.CanGoForward)
+                {
+                    webView.CoreWebView2.GoForward();
+                }
+            };
+
+            ViewModel.ReloadEvent += () =>
+            {
+                webView.CoreWebView2.Reload();
+            };
+
+            ViewModel.CancelEvent += () =>
+            {
+                webView.CoreWebView2.Stop();
+            };
+
+            ViewModel.GoEvent.Subscribe(url => webView.CoreWebView2.Navigate(url));
+        };
+
+        await webView.EnsureCoreWebView2Async();
     }
 }
