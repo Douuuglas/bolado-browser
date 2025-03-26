@@ -24,18 +24,12 @@ public partial class MainWindow : Window
         {
             ViewModel.BackEvent += () =>
             {
-                if (webView.CoreWebView2.CanGoBack)
-                {
-                    webView.CoreWebView2.GoBack();
-                }
+                webView.CoreWebView2.GoBack();
             };
 
             ViewModel.ForwardEvent += () =>
             {
-                if (webView.CoreWebView2.CanGoForward)
-                {
-                    webView.CoreWebView2.GoForward();
-                }
+                webView.CoreWebView2.GoForward();
             };
 
             ViewModel.ReloadEvent += () =>
